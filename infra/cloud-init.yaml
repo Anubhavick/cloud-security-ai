@@ -1,0 +1,67 @@
+#cloud-config
+# ============================================================================
+# Cloud-Init Configuration
+# ============================================================================
+# This script runs on first boot of the compute instance
+# It sets up the environment for deploying the FastAPI backend
+# ============================================================================
+
+# Update system packages
+package_update: true
+package_upgrade: true
+
+# Install required packages
+packages:
+  - git
+  - python3
+  - python3-pip
+  - python3-devel
+  - gcc
+  - make
+  - firewalld
+  - docker
+  - docker-compose
+
+# Configure firewall to allow backend traffic
+runcmd:
+  # Start and enable firewalld
+  - systemctl start firewalld
+  - systemctl enable firewalld
+  
+  # Open ports for SSH, HTTP, HTTPS, and FastAPI
+  - firewall-cmd --permanent --add-service=ssh
+  - firewall-cmd --permanent --add-service=http
+  - firewall-cmd --permanent --add-service=https
+  - firewall-cmd --permanent --add-port=8000/tcp
+  - firewall-cmd --reload
+  
+  # Start and enable Docker
+  - systemctl start docker
+  - systemctl enable docker
+  
+  # Add opc user to docker group
+  - usermod -aG docker opc
+  
+  # Create application directory
+  - mkdir -p /opt/hackathon
+  - chown opc:opc /opt/hackathon
+  
+  # Install Python packages globally (useful for development)
+  - pip3 install --upgrade pip
+  - pip3 install fastapi uvicorn python-multipart python-dotenv scikit-learn joblib pandas numpy
+
+# Set timezone
+timezone: America/New_York
+
+# Final message
+final_message: |
+  Cloud-init setup complete!
+  Project: ${project_tag}
+  
+  The instance is ready for deploying the backend.
+  SSH into the instance and deploy your FastAPI application.
+  
+  Next steps:
+  1. SSH into the instance
+  2. Clone your repository or upload your backend code
+  3. Run the backend with Docker or directly with uvicorn

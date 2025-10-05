@@ -1,0 +1,52 @@
+# ============================================================================
+# Terraform Variables Configuration
+# ============================================================================
+# INSTRUCTIONS:
+# 1. Copy this file to terraform.tfvars: cp terraform.tfvars.example terraform.tfvars
+# 2. Fill in the required values marked with "FILL_ME"
+# 3. Adjust optional values as needed
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# REQUIRED - YOU MUST FILL THESE VALUES
+# ----------------------------------------------------------------------------
+
+# Your OCI Tenancy OCID
+# Find this: OCI Console -> Click your profile icon -> Tenancy: <name> -> Copy OCID
+# Get it from: https://cloud.oracle.com/tenancy
+tenancy_ocid = "FILL_ME_ocid1.tenancy.oc1..aaaaaaaxxxxx"
+
+# Your SSH Public Key (for accessing the compute instance)
+# OPTIONAL: Leave empty if you don't have SSH key yet (you can add it later)
+# Generate a new key pair:
+#   ssh-keygen -t rsa -b 4096 -f ~/.ssh/hackathon_key
+# Then paste the contents of ~/.ssh/hackathon_key.pub below
+ssh_public_key = ""
+
+# ----------------------------------------------------------------------------
+# OPTIONAL - Adjust these if needed
+# ----------------------------------------------------------------------------
+
+# OCI Region (change if you want to use a different region)
+region = "us-ashburn-1"
+# Other options: us-phoenix-1, eu-frankfurt-1, ap-mumbai-1, etc.
+
+# Compartment name (used to organize resources)
+compartment_name = "hackathon-cloud-security-ai"
+
+# VCN and Subnet CIDR blocks
+vcn_cidr_block    = "10.0.0.0/16"
+subnet_cidr_block = "10.0.1.0/24"
+
+# Object Storage bucket name (must be unique within your tenancy)
+bucket_name = "hackathon-ml-bucket"
+
+# Compute instance configuration
+instance_display_name = "hackathon-backend-vm"
+instance_shape        = "VM.Standard.E2.1.Micro"  # Always Free tier
+
+# Boot volume size (50 GB is reasonable for Always Free)
+instance_boot_volume_size_in_gbs = 50
+
+# Project tag
+project_tag = "oracle-hackathon-2025"

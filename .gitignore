@@ -1,0 +1,170 @@
+# ============================================================================
+# .gitignore
+# ============================================================================
+# Files and directories to exclude from version control
+# ============================================================================
+
+# ============================================================================
+# Terraform
+# ============================================================================
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.tfvars
+!*.tfvars.example
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+
+# ============================================================================
+# Python / Backend
+# ============================================================================
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv
+
+# PyCharm
+.idea/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ML Models and Data (if large)
+# Uncomment if you don't want to track models
+# backend/app/ml_models/*.joblib
+# backend/app/ml_models/*.pkl
+backend/data/*.csv
+backend/data/*.json
+
+# Logs
+*.log
+
+# ============================================================================
+# Node / Frontend
+# ============================================================================
+# Dependencies
+node_modules/
+/.pnp
+.pnp.js
+
+# Testing
+/coverage
+
+# Production build
+/build
+/dist
+
+# Misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Package manager lock files (optional - uncomment if needed)
+# package-lock.json
+# yarn.lock
+
+# Vite
+.vite
+
+# ============================================================================
+# Docker
+# ============================================================================
+*.dockerfile.tmp
+
+# ============================================================================
+# OS
+# ============================================================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+
+# ============================================================================
+# SSH Keys (IMPORTANT - Never commit these!)
+# ============================================================================
+*.pem
+*.key
+!*.pub
+id_rsa
+id_rsa.pub
+hackathon_key
+hackathon_key.pub
+
+# ============================================================================
+# Project Specific
+# ============================================================================
+# Temporary files
+tmp/
+temp/
+
+# Backup files
+*.bak
+*.backup
+
+# Archives
+*.zip
+*.tar.gz
+*.rar
