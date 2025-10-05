@@ -8,6 +8,7 @@
 from fastapi import FastAPI, HTTPException, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from contextlib import asynccontextmanager
 import logging
 import os
 from typing import Dict, Any, Optional
@@ -25,6 +26,31 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # ============================================================================
+# Application Lifespan Management
+# ============================================================================
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Manage application startup and shutdown events"""
+    # Startup
+    logger.info("Starting Cloud Security AI API...")
+    logger.info("Loading ML models...")
+    
+    # Initialize model manager
+    try:
+        model_manager = ModelManager()
+        app.state.model_manager = model_manager
+        logger.info("ML models loaded successfully")
+    except Exception as e:
+        logger.error(f"Error loading ML models: {e}")
+        logger.warning("API will start, but predictions may fail")
+    
+    yield
+    
+    # Shutdown
+    logger.info("Shutting down Cloud Security AI API...")
+
+# ============================================================================
 # FastAPI Application Initialization
 # ============================================================================
 
@@ -33,7 +59,8 @@ app = FastAPI(
     description="AI/ML API for Oracle Hackathon - Cybersecurity + Cloud",
     version="1.0.0",
     docs_url="/docs",
-    redoc_url="/redoc"
+    redoc_url="/redoc",
+    lifespan=lifespan
 )
 
 # ============================================================================
@@ -51,30 +78,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# ============================================================================
-# Application Startup/Shutdown Events
-# ============================================================================
-
-@app.on_event("startup")
-async def startup_event():
-    """Initialize resources on application startup"""
-    logger.info("Starting Cloud Security AI API...")
-    logger.info("Loading ML models...")
-    
-    # Initialize model manager
-    try:
-        model_manager = ModelManager()
-        app.state.model_manager = model_manager
-        logger.info("ML models loaded successfully")
-    except Exception as e:
-        logger.error(f"Error loading ML models: {e}")
-        logger.warning("API will start, but predictions may fail")
-
-@app.on_event("shutdown")
-async def shutdown_event():
-    """Cleanup resources on application shutdown"""
-    logger.info("Shutting down Cloud Security AI API...")
 
 # ============================================================================
 # Include Routers
