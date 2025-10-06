@@ -13,6 +13,11 @@ help:
 	@echo "Available commands:"
 	@echo "  make help              - Show this help message"
 	@echo ""
+	@echo "Quick Start:"
+	@echo "  make setup-dev         - Setup complete dev environment"
+	@echo "  make docker-up         - Start all services with Docker"
+	@echo "  make docker-down       - Stop Docker services"
+	@echo ""
 	@echo "Infrastructure (Terraform):"
 	@echo "  make init              - Initialize Terraform"
 	@echo "  make plan              - Show Terraform execution plan"
@@ -28,6 +33,13 @@ help:
 	@echo "Frontend (React):"
 	@echo "  make run-frontend      - Run frontend locally"
 	@echo "  make build-frontend    - Build frontend for production"
+	@echo ""
+	@echo "Docker:"
+	@echo "  make docker-build      - Build Docker images"
+	@echo "  make docker-up         - Start services with Docker Compose"
+	@echo "  make docker-down       - Stop Docker services"
+	@echo "  make docker-logs       - View Docker logs"
+	@echo "  make docker-clean      - Clean Docker containers and images"
 	@echo ""
 	@echo "Deployment:"
 	@echo "  make ssh-vm            - SSH into OCI compute instance"
@@ -153,6 +165,54 @@ deploy-backend:
 	echo "Building and running Docker container..."; \
 	ssh -i ~/.ssh/hackathon_key opc@$$INSTANCE_IP "cd /opt/hackathon && docker build -t backend . && docker stop backend || true && docker rm backend || true && docker run -d -p 8000:8000 --name backend --restart unless-stopped backend"; \
 	echo "Backend deployed! Access at: http://$$INSTANCE_IP:8000"
+
+# ============================================================================
+# Docker Commands
+# ============================================================================
+
+# Build Docker images
+docker-build:
+	@echo "Building Docker images..."
+	docker-compose build
+
+# Start services with Docker Compose
+docker-up:
+	@echo "Starting services with Docker Compose..."
+	@echo "This will train the ML model and start both backend and frontend"
+	@if [ ! -f "backend/app/ml_models/model.joblib" ]; then \
+		echo "Training ML model first..."; \
+		cd backend && python3 train.py || true; \
+	fi
+	docker-compose up -d
+	@echo ""
+	@echo "Services started!"
+	@echo "Frontend: http://localhost"
+	@echo "Backend: http://localhost:8000"
+	@echo "API Docs: http://localhost:8000/docs"
+	@echo ""
+	@echo "View logs: make docker-logs"
+	@echo "Stop: make docker-down"
+
+# Stop Docker services
+docker-down:
+	@echo "Stopping Docker services..."
+	docker-compose down
+
+# View Docker logs
+docker-logs:
+	@echo "Viewing Docker logs (Ctrl+C to exit)..."
+	docker-compose logs -f
+
+# Restart Docker services
+docker-restart:
+	@echo "Restarting Docker services..."
+	docker-compose restart
+
+# Clean Docker containers and images
+docker-clean:
+	@echo "Cleaning Docker containers and images..."
+	docker-compose down -v --rmi all
+	@echo "Docker cleanup complete!"
 
 # ============================================================================
 # Cleanup Commands

@@ -2,12 +2,38 @@
 
 A complete hackathon-ready monorepo combining **AI/ML**, **Cybersecurity**, and **Oracle Cloud Infrastructure (OCI)**. This project demonstrates a full-stack cloud-native application with infrastructure as code, machine learning inference, and a modern web interface.
 
+##  Quick Start (Choose One)
+
+### Option 1: Docker (Recommended - Easiest Setup)
+```bash
+# Prerequisites: Docker Desktop installed
+git clone <your-repo-url>
+cd cloud-security-ai
+cd backend && python3 train.py && cd ..  # Train ML model
+make docker-up                            # Start everything
+# Open http://localhost
+```
+
+### Option 2: Local Development
+```bash
+git clone <your-repo-url>
+cd cloud-security-ai
+make setup-dev        # Setup Python & Node.js environments
+make run-backend      # Terminal 1
+make run-frontend     # Terminal 2
+```
+
+📚 **Detailed Guides:**
+- [Docker Setup Guide](./DOCKER_SETUP.md) - Complete Docker instructions
+- [Local Setup Guide](./SETUP_GUIDE.md) - Manual setup instructions
+
 ## 🎯 Project Overview
 
 This project includes:
 - **Infrastructure** - Terraform configuration for OCI resources (compartment, VCN, Object Storage, Compute)
 - **Backend** - FastAPI application with ML model inference and data ingestion
 - **Frontend** - React dashboard with Tailwind CSS for interacting with the ML model
+- **Docker** - Complete containerization for easy deployment
 
 ## 🏗️ Architecture
 
