@@ -1,30 +1,48 @@
-# 👥 Team Developer Guide - Cloud Security AI
+# 👥 Team Developer Guide
 
-This guide is for team members who want to contribute, customize, or train models.
-
-## 🎯 Quick Reference
-
-| Task | Command | Where to Run |
-|------|---------|--------------|
-| Run Backend | `make run-backend` | Terminal 1 |
-| Run Frontend | `make run-frontend` | Terminal 2 |
-| Train Model | `cd backend && source venv/bin/activate && python train.py` | Terminal |
-| Run with Docker | `make docker-up` | Terminal |
-| Deploy to Cloud | `make apply` | Terminal (after OCI setup) |
-| View API Docs | Open `http://localhost:8000/docs` | Browser |
+Complete guide for team members to run, develop, and train models.
 
 ---
 
-## 📚 Table of Contents
+## 🎯 Quick Reference
 
-1. [First Time Setup](#first-time-setup)
-2. [Running the Application](#running-the-application)
-3. [Training the ML Model](#training-the-ml-model)
-4. [Development Workflows](#development-workflows)
-5. [VS Code Setup](#vs-code-setup)
-6. [Google Colab Alternative](#google-colab-alternative)
-7. [Infrastructure Explained](#infrastructure-explained)
-8. [Troubleshooting](#troubleshooting)
+| Task | Command |
+|------|---------|
+| Run Backend | `make run-backend` |
+| Run Frontend | `make run-frontend` |
+| Train Model | `cd backend && source venv/bin/activate && python train.py` |
+| Docker Mode | `make docker-up` |
+| View Logs | `make docker-logs` |
+
+---
+
+## 🔄 Development Workflow
+
+```mermaid
+flowchart TD
+    Start([Join Team]) --> Clone[Clone Repo]
+    Clone --> Setup{Choose Setup}
+    
+    Setup -->|Docker| Docker[make docker-up]
+    Setup -->|Local| Local[make setup-dev]
+    
+    Docker --> Dev[Start Developing]
+    Local --> Dev
+    
+    Dev --> Edit[Edit Code]
+    Edit --> Test[Test Changes]
+    Test --> Works{Works?}
+    
+    Works -->|Yes| Commit[git commit & push]
+    Works -->|No| Debug[Check Logs]
+    Debug --> Edit
+    
+    Commit --> PR[Create PR]
+    
+    style Start fill:#4CAF50
+    style Dev fill:#2196F3
+    style Commit fill:#9C27B0
+```
 
 ---
 
@@ -144,6 +162,38 @@ tmux kill-session -t frontend
 ---
 
 ## 🤖 Training the ML Model
+
+### Training Flow
+
+```mermaid
+flowchart TD
+    Start([Start Training]) --> Method{Choose Method}
+    
+    Method -->|Local| Local[Local Python]
+    Method -->|Colab| Colab[Google Colab]
+    Method -->|Jupyter| Jupyter[Jupyter Notebook]
+    
+    Local --> Train[train.py]
+    Colab --> Train
+    Jupyter --> Train
+    
+    Train --> Data[Load Data]
+    Data --> Process[Preprocess]
+    Process --> Model[Train Model]
+    Model --> Eval{Good?}
+    
+    Eval -->|No| Tune[Tune Parameters]
+    Tune --> Model
+    
+    Eval -->|Yes| Save[Save model.joblib]
+    Save --> Deploy[Copy to app/ml_models/]
+    Deploy --> Restart[Restart Backend]
+    Restart --> Done([✅ Model Live])
+    
+    style Start fill:#4CAF50
+    style Model fill:#2196F3
+    style Done fill:#FF9800
+```
 
 ### Option 1: Train Locally (Recommended)
 

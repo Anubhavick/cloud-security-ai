@@ -1,6 +1,8 @@
-# 🎨 Visual Flow Diagrams (Mermaid)
+# 🎨 Architecture Diagrams
 
-These diagrams use Mermaid syntax and will render beautifully on GitHub, VS Code (with Mermaid extension), and many markdown viewers.
+Interactive flowcharts and system diagrams using Mermaid.
+
+> **Note:** These diagrams render beautifully on GitHub! View on GitHub for the best experience.
 
 ---
 

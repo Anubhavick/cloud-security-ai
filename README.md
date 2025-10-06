@@ -2,11 +2,10 @@
 
 A complete hackathon-ready monorepo combining **AI/ML**, **Cybersecurity**, and **Oracle Cloud Infrastructure (OCI)**. This project demonstrates a full-stack cloud-native application with infrastructure as code, machine learning inference, and a modern web interface.
 
-##  Quick Start (Choose One)
+## 🚀 Quick Start (Choose One)
 
-### Option 1: Docker (Recommended - Easiest Setup)
+### Option 1: Docker (Recommended - Easiest)
 ```bash
-# Prerequisites: Docker Desktop installed
 git clone <your-repo-url>
 cd cloud-security-ai
 cd backend && python3 train.py && cd ..  # Train ML model
@@ -23,82 +22,104 @@ make run-backend      # Terminal 1
 make run-frontend     # Terminal 2
 ```
 
-📚 **Detailed Guides:**
-- [Docker Setup Guide](./DOCKER_SETUP.md) - Complete Docker instructions
-- [Local Setup Guide](./SETUP_GUIDE.md) - Manual setup instructions
+**📚 Detailed Documentation:**
+- [Team Developer Guide](./TEAM_GUIDE.md) - Complete guide for team members
+- [Docker Setup](./DOCKER_SETUP.md) - Docker deployment guide
+- [Local Setup](./SETUP_GUIDE.md) - Manual setup instructions
+- [Quick Reference](./QUICK_REFERENCE.md) - Command cheat sheet
+- [Architecture Diagrams](./DIAGRAMS.md) - Visual flowcharts and diagrams
 
-## 🎯 Project Overview
+---
 
-This project includes:
-- **Infrastructure** - Terraform configuration for OCI resources (compartment, VCN, Object Storage, Compute)
-- **Backend** - FastAPI application with ML model inference and data ingestion
-- **Frontend** - React dashboard with Tailwind CSS for interacting with the ML model
-- **Docker** - Complete containerization for easy deployment
+## 🏗️ System Architecture
 
-## 🏗️ Architecture
-
+```mermaid
+graph TB
+    subgraph Browser["🌐 Web Browser"]
+        UI[User Interface<br/>localhost:5173]
+    end
+    
+    subgraph Frontend["⚛️ Frontend"]
+        React[React App<br/>Dashboard UI]
+        API_Client[API Client]
+    end
+    
+    subgraph Backend["🐍 Backend"]
+        FastAPI[FastAPI Server<br/>Port 8000]
+        Routes[API Routes]
+        ModelMgr[Model Manager]
+        ML[ML Model<br/>model.joblib]
+    end
+    
+    subgraph Cloud["☁️ OCI Cloud"]
+        VCN[VCN + Subnet]
+        Compute[Compute Instance]
+        Storage[Object Storage]
+    end
+    
+    UI --> React
+    React --> API_Client
+    API_Client -->|HTTP| FastAPI
+    FastAPI --> Routes
+    Routes --> ModelMgr
+    ModelMgr --> ML
+    
+    Compute -.optional.-> FastAPI
+    Storage -.optional.-> ML
+    
+    style React fill:#61dafb
+    style FastAPI fill:#009688
+    style ML fill:#ff6b6b
+    style Cloud fill:#f4f4f4
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                     Oracle Cloud Infrastructure              │
-│                                                              │
-│  ┌──────────────┐  ┌──────────────┐  ┌─────────────────┐  │
-│  │ Compartment  │  │    VCN +     │  │ Object Storage  │  │
-│  │              │  │    Subnet    │  │     Bucket      │  │
-│  └──────────────┘  └──────────────┘  └─────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │           Compute Instance (Always Free)             │  │
-│  │  ┌───────────────────────────────────────────────┐  │  │
-│  │  │  FastAPI Backend + ML Model (Docker)          │  │  │
-│  │  └───────────────────────────────────────────────┘  │  │
-│  └──────────────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────────────┘
-                          ▲
-                          │ HTTP/REST API
-                          │
-                  ┌───────┴────────┐
-                  │  React Frontend │
-                  │  (Local/Hosted) │
-                  └────────────────┘
-```
+
+---
 
 ## 📁 Project Structure
 
 ```
 cloud-security-ai/
-├── infra/                      # Terraform infrastructure as code
-│   ├── provider.tf            # OCI provider configuration
-│   ├── variables.tf           # Input variables
-│   ├── main.tf               # Main infrastructure resources
-│   ├── outputs.tf            # Output values
-│   ├── terraform.tfvars.example  # Example variables file
-│   └── cloud-init.yaml       # Instance initialization script
-│
-├── backend/                    # FastAPI backend application
-│   ├── main.py               # FastAPI app entry point
-│   ├── requirements.txt      # Python dependencies
-│   ├── Dockerfile            # Docker configuration
-│   ├── .env.example          # Environment variables template
-│   ├── train.py              # ML model training script
-│   ├── app/
-│   │   ├── routers/          # API route handlers
-│   │   │   ├── health.py    # Health check endpoints
-│   │   │   ├── predict.py   # ML prediction endpoints
-│   │   │   └── ingest.py    # Data ingestion endpoints
-│   │   └── ml_models/        # ML models and management
-│   │       ├── model_manager.py
-│   │       └── model.joblib  (generated after training)
-│   └── data/                 # Training data storage
-│
-├── frontend/                   # React frontend application
-│   ├── package.json          # Node dependencies
-│   ├── vite.config.js        # Vite configuration
-│   ├── tailwind.config.js    # Tailwind CSS config
-│   ├── index.html            # HTML entry point
-│   ├── .env.example          # Environment variables template
-│   └── src/
-│       ├── main.jsx          # App entry point
-│       ├── App.jsx           # Main App component
+├── infra/                      # Terraform infrastructure
+├── backend/                    # FastAPI backend
+│   ├── main.py                # Entry point
+│   ├── train.py               # Model training
+│   └── app/routers/           # API endpoints
+├── frontend/                   # React frontend
+│   └── src/components/        # UI components
+├── docker-compose.yml         # Docker orchestration
+└── Makefile                   # Common commands
+```
+
+---
+
+## 🔄 Development Workflow
+
+```mermaid
+flowchart LR
+    Start([Start]) --> Choose{Setup?}
+    
+    Choose -->|Docker| D[make docker-up]
+    Choose -->|Local| L[make setup-dev]
+    
+    D --> Run[✅ Running]
+    L --> Run
+    
+    Run --> Code[Edit Code]
+    Code --> Test[Test]
+    Test --> Works{Works?}
+    
+    Works -->|Yes| Deploy[Deploy]
+    Works -->|No| Debug[Debug]
+    
+    Debug --> Code
+    Deploy --> Done([✨ Done])
+    
+    style Start fill:#4CAF50
+    style Run fill:#2196F3
+    style Done fill:#FF9800
+```
+
+---
 │       ├── config.js         # API configuration
 │       ├── components/       # React components
 │       │   └── Dashboard.jsx # Main dashboard
@@ -110,7 +131,30 @@ cloud-security-ai/
 └── .gitignore                 # Git ignore rules
 ```
 
-## 🚀 Quick Start
+---
+
+## 🎯 How It Works
+
+### Prediction Flow
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Frontend
+    participant Backend
+    participant ML Model
+    
+    User->>Frontend: Enter security data
+    Frontend->>Backend: POST /api/predict
+    Backend->>ML Model: Run inference
+    ML Model-->>Backend: Prediction result
+    Backend-->>Frontend: JSON response
+    Frontend-->>User: Display result
+```
+
+---
+
+## 🛠️ Getting Started
 
 ### Prerequisites
 

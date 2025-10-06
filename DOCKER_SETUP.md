@@ -1,34 +1,56 @@
-# 🚀 Docker Setup Guide - Cloud Security AI
-
-## Quick Start with Docker (Recommended for Easy Setup)
+# 🚀 Docker Setup Guide
 
 The easiest way to run this project is using Docker. This method works on **any system** (Windows, macOS, Linux) without needing to install Python, Node.js, or any dependencies manually.
 
-### Prerequisites
+---
 
-1. **Docker Desktop** - [Download here](https://www.docker.com/products/docker-desktop/)
-2. **Docker Compose** (included with Docker Desktop)
-
-### 🎯 One-Command Setup
+## 🎯 Quick Start
 
 ```bash
-# Clone the repository
 git clone <your-repo-url>
 cd cloud-security-ai
-
-# Train the ML model (one-time setup)
-cd backend
-python3 train.py  # or python train.py on Windows
-cd ..
-
-# Start everything with Docker
-make docker-up
+cd backend && python3 train.py && cd ..  # Train ML model (one-time)
+make docker-up                            # Start everything
 ```
 
-That's it! The application will be available at:
-- **Frontend**: http://localhost
-- **Backend API**: http://localhost:8000
-- **API Documentation**: http://localhost:8000/docs
+**Done!** Access:
+- Frontend: http://localhost
+- Backend: http://localhost:8000
+- API Docs: http://localhost:8000/docs
+
+---
+
+## 🏗️ Docker Architecture
+
+```mermaid
+graph TB
+    subgraph Docker["🐳 Docker Compose"]
+        subgraph Frontend["Frontend Container"]
+            FB[Node Build]
+            FN[Nginx Serve<br/>Port 80]
+            FB --> FN
+        end
+        
+        subgraph Backend["Backend Container"]
+            BB[Python Build]
+            BR[FastAPI Run<br/>Port 8000]
+            BB --> BR
+        end
+        
+        Net[Docker Network]
+        FN <--> Net
+        BR <--> Net
+    end
+    
+    Host[Your Computer] <--> FN
+    Host <--> BR
+    
+    style FB fill:#61dafb
+    style BR fill:#009688
+    style Net fill:#ffd700
+```
+
+---
 
 ### 📋 Docker Commands
 
