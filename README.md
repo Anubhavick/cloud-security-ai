@@ -481,7 +481,7 @@ The model manager (`backend/app/ml_models/model_manager.py`) can be extended to 
 **Problem:** "Docker command not found" on instance
 **Solution:** Wait 2-3 minutes for cloud-init to complete
 
-## 🎓 Learning Resources
+## Learning Resources
 
 ### OCI
 - [OCI Documentation](https://docs.oracle.com/en-us/iaas/Content/home.htm)
@@ -501,18 +501,11 @@ The model manager (`backend/app/ml_models/model_manager.py`) can be extended to 
 
 This project is created for the Oracle Hackathon 2025. Feel free to use and modify for your hackathon submissions.
 
-## 🤝 Contributing
 
-This is a hackathon starter project. Fork it and make it your own!
 
-## 📞 Support
 
-For issues with:
-- **OCI**: Check [OCI Documentation](https://docs.oracle.com/)
-- **Terraform**: Check [Terraform OCI Provider Docs](https://registry.terraform.io/providers/oracle/oci/latest/docs)
 - **Application**: Review the individual README files in `backend/` and `frontend/`
 
-## ✅ Checklist for Hackathon
 
 Before your demo:
 - [ ] Infrastructure provisioned successfully
@@ -523,12 +516,3 @@ Before your demo:
 - [ ] Screenshots/demo video prepared
 - [ ] Code committed to Git (without secrets!)
 
-## 🎉 Ready to Hack!
-
-You now have a complete, working starter project. Focus on:
-1. **Your unique ML model** - Replace the dummy model with your cybersecurity model
-2. **Custom features** - Add new endpoints and UI components
-3. **Data integration** - Connect to real data sources
-4. **Security features** - Implement threat detection, anomaly detection, etc.
-
-Good luck with your hackathon! 🚀
